@@ -4,7 +4,9 @@ import com.packagename.vaadinclean.spring.AccessControl;
 import com.packagename.vaadinclean.spring.layout.MainLayout;
 import com.packagename.vaadinclean.spring.SimpleAccessControl;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.login.LoginForm;
+import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
@@ -23,11 +25,12 @@ public class LoginView extends VerticalLayout implements HasUrlParameter<String>
     private String parameter;
 
     public LoginView(){
-        LoginForm component = new LoginForm();
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+
+        LoginForm component = new LoginForm(createCustomI18n());
         add(component);
 
         AccessControl accessControl = new SimpleAccessControl();
-
         component.addLoginListener(e -> {
             boolean isAuthenticated = accessControl.checkUsernamePassword(e.getUsername(), e.getPassword());
             if (isAuthenticated) {
@@ -42,10 +45,34 @@ public class LoginView extends VerticalLayout implements HasUrlParameter<String>
             }
         });
 
+        component.addForgotPasswordListener(forgotPasswordEvent -> {
+            UI.getCurrent().getPage().open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+        });
+
     }
 
     @Override
     public void setParameter(BeforeEvent beforeEvent, String s) {
         this.parameter = s;
+    }
+
+    private LoginI18n createCustomI18n() {
+        final LoginI18n i18n = LoginI18n.createDefault();
+
+        i18n.setHeader(new LoginI18n.Header());
+        i18n.getHeader().setTitle("HeaderTitle");
+        i18n.getHeader().setDescription("HeaderDescription");
+        i18n.getForm().setTitle("Vaadin Clean");
+        i18n.getForm().setUsername("Uporabniško ime");
+        i18n.getForm().setSubmit("PRIJAVA");
+        i18n.getForm().setPassword("Geslo");
+        i18n.getForm().setForgotPassword("Pozabljeno geslo");
+        i18n.getErrorMessage().setTitle("Napaka!");
+        i18n.getErrorMessage()
+                .setMessage("Napačno uporabniško ime ali geslo.");
+        //i18n.setAdditionalInformation(
+        //        "additional info");
+
+        return i18n;
     }
 }

@@ -1,18 +1,16 @@
 package com.packagename.vaadinclean.spring.view;
 
 import com.packagename.vaadinclean.spring.layout.MainLayout;
-import com.packagename.vaadinclean.spring.pages.SettingsPage;
+import com.packagename.vaadinclean.spring.tab.SettingsTab;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.page.Push;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.server.VaadinSession;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.shared.communication.PushMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +24,10 @@ import static com.packagename.vaadinclean.spring.view.LoginView.ATTRIBUTE_USERNA
 //@PWA(name = "Project Base for Vaadin Flow with Spring", shortName = "Project Base")
 public class MainView extends VerticalLayout {
     public MainView(){
+        setPadding(false);
+
+        setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
+
         VaadinSession vaadinSession = VaadinSession.getCurrent();
         String username = (String) vaadinSession.getAttribute(ATTRIBUTE_USERNAME);
 
@@ -38,7 +40,7 @@ public class MainView extends VerticalLayout {
 
         Div page1 = new Div();
         Div page2 = new Div();
-        Div page3 = new SettingsPage();
+        Div page3 = new SettingsTab();
 
         page1.setVisible(false);
         page2.setVisible(false);
@@ -65,8 +67,6 @@ public class MainView extends VerticalLayout {
             }
             pagesShown.add(selectedPage);
         });
-
-
         //page1.add(new Image("/images/vilko.png", "Alternative image text"));
 
         add(tabs, pages);
