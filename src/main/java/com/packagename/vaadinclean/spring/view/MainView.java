@@ -1,8 +1,10 @@
 package com.packagename.vaadinclean.spring.view;
 
 import com.packagename.vaadinclean.spring.layout.MainLayout;
+import com.packagename.vaadinclean.spring.tab.DailyTab;
 import com.packagename.vaadinclean.spring.tab.SettingsTab;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.tabs.Tab;
@@ -24,6 +26,7 @@ import static com.packagename.vaadinclean.spring.view.LoginView.ATTRIBUTE_USERNA
 //@PWA(name = "Project Base for Vaadin Flow with Spring", shortName = "Project Base")
 public class MainView extends VerticalLayout {
     public MainView(){
+        addClassName("mainView");
         setPadding(false);
 
         setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
@@ -31,18 +34,20 @@ public class MainView extends VerticalLayout {
         VaadinSession vaadinSession = VaadinSession.getCurrent();
         String username = (String) vaadinSession.getAttribute(ATTRIBUTE_USERNAME);
 
-        Tab tab1 = new Tab("Tedensko");
+        Tab tab1 = new Tab("Dnevno");
         Tab tab2 = new Tab("Generalka");
         Tab tab3 = new Tab("Nastavitve");
         Tabs tabs = new Tabs(tab1, tab2, tab3);
+        tabs.setClassName("tabs");
+
         tabs.setSelectedIndex(0);
         tabs.setFlexGrowForEnclosedTabs(1);
 
-        Div page1 = new Div();
+        Div page1 = new DailyTab();
         Div page2 = new Div();
         Div page3 = new SettingsTab();
 
-        page1.setVisible(false);
+        page1.setVisible(true);
         page2.setVisible(false);
         page3.setVisible(false);
 

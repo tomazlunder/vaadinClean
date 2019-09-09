@@ -4,6 +4,7 @@ import com.packagename.vaadinclean.spring.AccessControl;
 import com.packagename.vaadinclean.spring.layout.MainLayout;
 import com.packagename.vaadinclean.spring.SimpleAccessControl;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
@@ -16,6 +17,8 @@ import com.vaadin.flow.server.VaadinSession;
 import static com.packagename.vaadinclean.spring.view.LoginView.*;
 
 //@PWA(name = "Project Base for Vaadin Flow with Spring", shortName = "Project Base")
+@CssImport("./styles/testStyle.css")
+
 @Route(value = NAV, layout = MainLayout.class)
 public class LoginView extends VerticalLayout implements HasUrlParameter<String> {
     public static final String NAV = "login";
@@ -25,6 +28,7 @@ public class LoginView extends VerticalLayout implements HasUrlParameter<String>
     private String parameter;
 
     public LoginView(){
+        addClassName("loginView");
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
         LoginForm component = new LoginForm(createCustomI18n());

@@ -17,6 +17,7 @@ import static java.util.Optional.ofNullable;
 public class MainLayout extends VerticalLayout implements RouterLayout, BeforeEnterObserver {
 
     public MainLayout() {
+        addClassName("mainLayout");
     }
 
     @Override
