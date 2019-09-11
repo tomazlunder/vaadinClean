@@ -5,22 +5,19 @@ import com.packagename.vaadinclean.spring.layout.MainLayout;
 import com.packagename.vaadinclean.spring.SimpleAccessControl;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import static com.packagename.vaadinclean.spring.view.LoginView.*;
-
-//@PWA(name = "Project Base for Vaadin Flow with Spring", shortName = "Project Base")
 @CssImport("./styles/testStyle.css")
+@Route(value = "login", layout = MainLayout.class)
+public class LoginView extends VerticalLayout {
+    final static Logger logger = LoggerFactory.getLogger("LoginView");
 
-@Route(value = NAV, layout = MainLayout.class)
-public class LoginView extends VerticalLayout implements HasUrlParameter<String> {
     public static final String NAV = "login";
     public static final String ATTRIBUTE_USERNAME = "username";
     public static final String ATTRIBUTE_IS_AUTH = "auth";
@@ -42,9 +39,11 @@ public class LoginView extends VerticalLayout implements HasUrlParameter<String>
                 vaadinSession.setAttribute(ATTRIBUTE_USERNAME, e.getUsername());
                 vaadinSession.setAttribute(ATTRIBUTE_IS_AUTH, true);
 
-                UI.getCurrent().navigate(parameter);
+                UI.getCurrent().navigate("app");
 
             } else {
+                logger.warn("Failed login attempt for" + e.getUsername());
+
                 component.setError(true);
             }
         });
@@ -53,11 +52,6 @@ public class LoginView extends VerticalLayout implements HasUrlParameter<String>
             UI.getCurrent().getPage().open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
         });
 
-    }
-
-    @Override
-    public void setParameter(BeforeEvent beforeEvent, String s) {
-        this.parameter = s;
     }
 
     private LoginI18n createCustomI18n() {

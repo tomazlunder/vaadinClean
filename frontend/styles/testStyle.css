@@ -23,3 +23,11 @@
 .tabs{
     background-color:white;
 }
+
+.dayDoneLabel{
+    background-color: greenyellow;
+}
+
+.dayNotDoneLabel{
+    background-color: orange;
+}

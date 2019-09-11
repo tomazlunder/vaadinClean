@@ -13,7 +13,7 @@ public class CustomRouteNotFoundError extends RouteNotFoundError {
     public int setErrorParameter(BeforeEnterEvent event,
                                  ErrorParameter<NotFoundException> parameter) {
         //UI.getCurrent().navigate("");
-        event.rerouteTo("");
+        event.rerouteTo("app");
         return HttpServletResponse.SC_ACCEPTED;
     }
 }

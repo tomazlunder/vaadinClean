@@ -2,6 +2,8 @@ package com.packagename.vaadinclean.spring.tab;
 
 import com.packagename.vaadinclean.spring.Application;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.board.Row;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -30,6 +32,8 @@ public class DailyTab extends Div {
     boolean isDayDone = false;
 
     public DailyTab(){
+        opravila = new ArrayList<>();
+
         addClassName("dailyTab");
         //Is user dezuren?
         String dezurniUsername = Application.databaseHandler.getDezurni();
@@ -39,18 +43,46 @@ public class DailyTab extends Div {
         //So opravila ze koncana?
         isDayDone = Application.databaseHandler.isDayDone();
 
-
         //Layout
         VerticalLayout verticalLayout = new VerticalLayout();
-        verticalLayout.add(new Label("Dezurni cimer: " + dezurniUsername.toUpperCase() + " (samo dezurni lahko potrdi opravljenost opravil)"));
+        verticalLayout.add(new Label("Dezurni cimer: " + dezurniUsername.toUpperCase() + ". (samo dezurni lahko potrdi opravljenost opravil)"));
         verticalLayout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
 
-        opravila = new ArrayList<>();
+        if(isDayDone){
+            Label dayDone = new Label("STATUS: Dnevna opravila so opravljena! :)");
+            dayDone.addClassName("dayDoneLabel");
+            verticalLayout.add(dayDone);
+
+            if(isUserDezuren) {
+                Button buttonResetDayDone = new Button("Resetiraj opravljenost.");
+                buttonResetDayDone.addClickListener(buttonClickEvent -> {
+                    Application.databaseHandler.resetCurrentDayDone();
+
+                    UI.getCurrent().getPage().reload();
+                });
+                verticalLayout.add(buttonResetDayDone);
+            }
+
+            add(verticalLayout);
+
+            return;
+        }
+
+        Label dayNotDone = new Label("STATUS: Dnevna opravila niso opravljena.");
+        dayNotDone.addClassName("dayNotDoneLabel");
+        verticalLayout.add(dayNotDone);
+
         fetchAndCreateOpravila();
         for(Checkbox cb : opravila) verticalLayout.add(cb);
 
         buttonPotrdi = new Button("Potrdi opravljenost opravil");
         buttonPotrdi.setEnabled(false);
+
+        buttonPotrdi.addClickListener(buttonClickEvent -> {
+           Application.databaseHandler.setCurrentDayDone();
+
+            UI.getCurrent().getPage().reload();
+        });
 
         verticalLayout.add(buttonPotrdi);
 

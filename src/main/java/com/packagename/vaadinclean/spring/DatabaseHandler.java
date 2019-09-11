@@ -1,9 +1,17 @@
 package com.packagename.vaadinclean.spring;
 
+
+
+import org.apache.logging.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.*;
 import java.util.ArrayList;
 
 public class DatabaseHandler {
+
+    final static Logger logger = LoggerFactory.getLogger("DatabaseHandler");
 
     public DatabaseHandler() {
     }
@@ -14,10 +22,10 @@ public class DatabaseHandler {
             connection = DriverManager.getConnection(
                     "jdbc:mariadb://localhost:3306/cleanbase", "user1", "awdqseww22"
             );
-            System.out.println("DatabaseHander: Connection succesful!");
+            logger.info("Connection succesful!");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("DatabaseHander: Database connection failed!");
+            logger.error("Connection failed!");
         }
 
         return connection;
@@ -59,9 +67,7 @@ public class DatabaseHandler {
 
     public boolean setSaltAndHash(String username, String salt, String hash) {
         Connection connection = makeConnection();
-        if (connection == null) {
-            return false;
-        }
+        if (connection == null) return false;
 
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET pSalt=?, pHash=? WHERE username = ?");
@@ -83,9 +89,7 @@ public class DatabaseHandler {
 
     public ArrayList<ArrayList<String>> getOpravila() {
         Connection connection = makeConnection();
-        if (connection == null) {
-            return null;
-        }
+        if (connection == null) return null;
 
         ArrayList<ArrayList<String>> toReturn = new ArrayList<>();
 
@@ -110,14 +114,9 @@ public class DatabaseHandler {
 
     public String getDezurni() {
         Connection connection = makeConnection();
-        if (connection == null) {
-            return null;
-        }
+        if (connection == null) return null;
 
         try {
-                /*SELECT u.userName
-FROM teden t JOIN users u on t.userID = u.userID
-WHERE t.dateStart <= CURRENT_DATE AND t.dateEnd> CURRENT_DATE;*/
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT u.userName\n" +
                     "FROM teden t JOIN users u on t.userID = u.userID\n" +
                     "WHERE t.dateStart <= CURRENT_DATE AND t.dateEnd> CURRENT_DATE;");
@@ -125,22 +124,19 @@ WHERE t.dateStart <= CURRENT_DATE AND t.dateEnd> CURRENT_DATE;*/
             ResultSet rs = preparedStatement.executeQuery();
             connection.close();
 
-
             rs.next();
             return rs.getString(1);
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("DatabaseHander#getOpravila: prepareStatementFailed!");
             return null;
         }
     }
 
     public boolean isDayDone(){
         Connection connection = makeConnection();
-        if (connection == null) {
-            return false;
-        }
+        if (connection == null) return false;
+
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT opravljen FROM dan WHERE date = CURRENT_DATE ");
 
@@ -149,6 +145,7 @@ WHERE t.dateStart <= CURRENT_DATE AND t.dateEnd> CURRENT_DATE;*/
 
             rs.next();
             return rs.getBoolean(1);
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("DatabaseHander#getOpravila: prepareStatementFailed!");
@@ -158,11 +155,26 @@ WHERE t.dateStart <= CURRENT_DATE AND t.dateEnd> CURRENT_DATE;*/
 
     public void setCurrentDayDone(){
         Connection connection = makeConnection();
-        if (connection == null) {
-            return;
-        }
+        if (connection == null) return;
+
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE dan SET opravljen=TRUE WHERE date = CURRENT_DATE ");
+            preparedStatement.execute();
+            connection.commit();
+            connection.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("DatabaseHander#setCurrentDayDone: prepareStatementFailed!");
+        }
+    }
+
+    public void resetCurrentDayDone(){
+        Connection connection = makeConnection();
+        if (connection == null) return;
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE dan SET opravljen=FALSE WHERE date = CURRENT_DATE ");
             preparedStatement.execute();
             connection.commit();
             connection.close();

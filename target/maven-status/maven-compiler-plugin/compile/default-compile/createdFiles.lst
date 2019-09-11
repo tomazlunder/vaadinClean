@@ -1,0 +1,16 @@
+com\packagename\vaadinclean\spring\view\MainView.class
+com\packagename\vaadinclean\spring\view\LoginView.class
+com\packagename\vaadinclean\spring\tab\SettingsTab.class
+com\packagename\vaadinclean\spring\dialog\ChangePasswordDialog.class
+com\packagename\vaadinclean\spring\CustomRouteNotFoundError.class
+com\packagename\vaadinclean\spring\layout\MainLayout.class
+com\packagename\vaadinclean\spring\SimpleAccessControl.class
+com\packagename\vaadinclean\spring\MessageBean.class
+com\packagename\vaadinclean\spring\Application.class
+com\packagename\vaadinclean\spring\DatabaseHandler.class
+com\packagename\vaadinclean\spring\Passwords.class
+com\packagename\vaadinclean\spring\AccessControl.class
+com\packagename\vaadinclean\spring\tab\DailyTab.class
+com\packagename\vaadinclean\spring\TestClass.class
+com\packagename\vaadinclean\spring\view\AppView.class
+com\packagename\vaadinclean\spring\TimeUtils.class

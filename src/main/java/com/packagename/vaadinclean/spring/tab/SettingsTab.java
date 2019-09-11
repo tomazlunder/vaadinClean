@@ -17,17 +17,20 @@ public class SettingsTab extends Div{
 
     public SettingsTab() {
         //Change password button
-        buttonChangePassword = new Button("Change password");
+        buttonChangePassword = new Button("Spremeni geslo");
         buttonChangePassword.addClickListener(event -> {
             Dialog dialog = new ChangePasswordDialog();
             dialog.open();
         });
 
         //Logout button
-        buttonLogout = new Button("Logout");
+        buttonLogout = new Button("Odjava");
         buttonLogout.addClickListener(buttonClickEvent -> {
-            UI.getCurrent().navigate("");
+            System.out.println("ODJAVA CLICKED!");
+            //UI.getCurrent().navigate("");
             VaadinSession.getCurrent().close();
+            UI.getCurrent().navigate("login");
+            //UI.getCurrent().getPage().reload();
         });
 
         //PAGE FORMATTING
